@@ -14,7 +14,7 @@ namespace RazorPagesMovie
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration , IWebHostEnvironment env)
         {
             Environment = env;// add environment variable.
             Configuration = configuration;
