@@ -16,18 +16,30 @@ namespace RazorPagesMovie
     {
         public Startup(IConfiguration configuration)
         {
+            Environment = env;// add environment variable.
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-
+        if (Environment.IsDevelopment())
+        {
             services.AddDbContext<RazorPagesMovieContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("RazorPagesMovieContext")));
+            options.UseSqlite(
+                Configuration.GetConnectionString("RazorPagesMovieContext")));
+        }
+        else
+        {
+            services.AddDbContext<RazorPagesMovieContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString("MovieContext")));
+        }
+
+        services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
